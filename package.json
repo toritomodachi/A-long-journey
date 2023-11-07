@@ -1,0 +1,21 @@
+{
+  "name": "test178",
+  "version": "0.0.1",
+  "description": "재밌는테스트",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "pang._.ii",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^14.13.0",
+    "dotenv": "^16.3.1",
+    "fs": "^0.0.1-security",
+    "mongoose": "^8.0.0",
+    "ms": "^2.1.3",
+    "node": "^21.1.0",
+    "node.js": "^0.0.1-security"
+  }
+}
