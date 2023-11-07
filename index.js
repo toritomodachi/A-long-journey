@@ -10,7 +10,7 @@ client.once('ready', () => {
 });
 
 // 봇과 서버를 연결해주는 부분
-client.login('MTE3MTI1OTYyOTM0MzM1ODk5Nw.GKg53g.8EbRLTrFO7FetyiiESDqOYBhivvDK2Nu1AnklI');
+client.login('ㅁ');
 
 // 디스코드 서버에 작성되는 모든 메시지를 수신하는 리스너
 client.on('message', message => {
