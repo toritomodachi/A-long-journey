@@ -19,9 +19,9 @@ fs.readdir('./commands/', (err, files) => {
 client.on('ready', () => {
   console.log(`봇이 ${client.user.tag}로 로그인했습니다.`);
 
-client.user.setPresence({ status: 'invisible' })
-    .then(console.log('봇이 오프라인 상태로 설정되었습니다.'))
-    .catch(console.error);
+// client.user.setPresence({ status: 'invisible' })
+//     .then(console.log('봇이 오프라인 상태로 설정되었습니다.'))
+//     .catch(console.error);
 });
 
 client.on('message', message => {
