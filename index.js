@@ -1,18 +1,47 @@
-const Discord = require('discord.js');	// discord.js 라이브러리 호출
-const client = new Discord.Client({ intents: [
-    Discord.GatewayIntentBits.Guilds,
-    Discord.GatewayIntentBits.GuildMessages
-  ]});	// Client 객체 생성
+const Discord = require('discord.js');
+const client = new Discord.Client();
+const config = require('./config.json');
+const fs = require('fs');
+const prefix = '!!!';
 
-// discord 봇이 실행될 때 딱 한 번 실행할 코드를 적는 부분
-client.once('ready', () => {
-	console.log('Ready!');
+client.commands = new Discord.Collection();
+
+// 명령어 파일을 로드
+fs.readdir('./commands/', (err, files) => {
+  if (err) return console.error(err);
+  files.forEach(file => {
+    if (!file.endsWith('.js')) return;
+    const command = require(`./commands/${file}`);
+    client.commands.set(command.name, command);
+  });
 });
 
-// 봇과 서버를 연결해주는 부분
-client.login('ㅁ');
+client.on('ready', () => {
+  console.log(`봇이 ${client.user.tag}로 로그인했습니다.`);
 
-// 디스코드 서버에 작성되는 모든 메시지를 수신하는 리스너
+client.user.setPresence({ status: 'invisible' })
+    .then(console.log('봇이 오프라인 상태로 설정되었습니다.'))
+    .catch(console.error);
+});
+
 client.on('message', message => {
-	console.log(message.content);
+  if (message.author.bot) return;
+
+  if (message.content.startsWith(prefix)) {
+    const args = message.content.slice(prefix.length).trim().split(/ +/);
+    const commandName = args.shift().toLowerCase();
+
+    const command = client.commands.get(commandName);
+
+    if (!command) return;
+
+    try {
+      command.execute(message, args);
+    } catch (error) {
+      console.error(error);
+      message.reply('명령어를 실행하는 중 오류가 발생했습니다.');
+    }
+  }
 });
+
+client.login(config.token);

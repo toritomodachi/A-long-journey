@@ -10,7 +10,7 @@
   "author": "pang._.ii",
   "license": "ISC",
   "dependencies": {
-    "discord.js": "^14.13.0",
+    "discord.js": "^12.5.3",
     "dotenv": "^16.3.1",
     "fs": "^0.0.1-security",
     "mongoose": "^8.0.0",
