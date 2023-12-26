@@ -1,8 +1,11 @@
+// index.js
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const config = require('./config.json');
 const fs = require('fs');
 const prefix = '!!!';
+
+const queue = new Map();  // queue를 직접 정의
 
 client.commands = new Discord.Collection();
 
@@ -18,10 +21,6 @@ fs.readdir('./commands/', (err, files) => {
 
 client.on('ready', () => {
   console.log(`봇이 ${client.user.tag}로 로그인했습니다.`);
-
-// client.user.setPresence({ status: 'invisible' })
-//     .then(console.log('봇이 오프라인 상태로 설정되었습니다.'))
-//     .catch(console.error);
 });
 
 client.on('message', message => {
@@ -36,12 +35,27 @@ client.on('message', message => {
     if (!command) return;
 
     try {
-      command.execute(message, args);
+      command.execute(message, args, queue);  // queue를 직접 전달
     } catch (error) {
       console.error(error);
       message.reply('명령어를 실행하는 중 오류가 발생했습니다.');
     }
   }
 });
+
+client.on('voiceStateUpdate', (oldState, newState) => {
+  if (!oldState.channelId && newState.channelId) {
+    // 유저가 음성 채널에 참가했을 때
+    handleQueue(oldState.guild.id);
+  }
+});
+
+function handleQueue(guildId) {
+  const serverQueue = queue.get(guildId);
+
+  if (serverQueue && serverQueue.playing) {
+    play(guildId, serverQueue.songs[0], queue);
+  }
+}
 
 client.login(config.token);
