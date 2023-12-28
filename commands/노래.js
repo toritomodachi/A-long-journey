@@ -1,17 +1,16 @@
-// commands/노래.js
 const { YTSearcher } = require('ytsearcher');
 const ytdl = require('ytdl-core');
 const config = require('../config.json');
 
 const searcher = new YTSearcher(config.yttoken);
-let queues = {};
+let queues = new Map();
 
 function setQueue(guildId, queue) {
-  queues[guildId] = queue;
+  queues.set(guildId, queue);
 }
 
 function getQueue(guildId) {
-  return queues[guildId];
+  return queues.get(guildId);
 }
 
 module.exports = {
@@ -51,7 +50,7 @@ module.exports = {
         play(message.guild, queueContruct.songs[0]);
       } catch (err) {
         console.error(err);
-        delete queues[message.guild.id];
+        queues.delete(message.guild.id);
         return message.channel.send(err);
       }
     } else {
@@ -66,7 +65,7 @@ function play(guild, song) {
 
   if (!song) {
     serverQueue.voiceChannel.leave();
-    delete queues[guild.id];
+    queues.delete(guild.id);
     return;
   }
 

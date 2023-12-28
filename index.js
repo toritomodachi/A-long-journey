@@ -1,4 +1,3 @@
-// index.js
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const config = require('./config.json');
@@ -44,7 +43,7 @@ client.on('message', message => {
 });
 
 client.on('voiceStateUpdate', (oldState, newState) => {
-  if (!oldState.channelId && newState.channelId) {
+  if (!oldState.channelID && newState.channelID) {
     // 유저가 음성 채널에 참가했을 때
     handleQueue(oldState.guild.id);
   }
